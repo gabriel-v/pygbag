@@ -1,0 +1,3 @@
+[submodule "packages.d/lvgl/pygame-lvgl-wasm"]
+	path = packages.d/lvgl/pygame-lvgl-wasm
+	url = https://github.com/pmp-p/pygame-lvgl-wasm
