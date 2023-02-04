@@ -1,6 +1,7 @@
 #!pythonrc.py
 
-import os, sys, json, builtins
+import os, sys, json, builtins, logging
+log = logging.getLogger(__name__)
 
 # to be able to access aio.cross.simulator
 import aio
@@ -55,8 +56,13 @@ builtins.overloaded = overloaded
 
 
 def DBG(*argv):
-    if PyConfig.dev_mode:
-        print(*argv)
+    message = " ".join(argv)
+    try:
+        if PyConfig.dev_mode:
+            log.debug(message)
+    except:
+        log.debug('failed to query PyConfig!')
+        log.debug(message)
 
 
 try:
@@ -177,7 +183,7 @@ except:
                 code = None
 
             if code:
-                print(f"180: imports: {imports}")
+                DBG(f"180: imports: {imports}")
                 exec(code, __main__dict, __main__dict)
 
         return __import__("__main__")
@@ -962,7 +968,7 @@ if not aio.cross.simulator:
                 self.url = __EMSCRIPTEN__.fix_url(maybe_url)
                 self.mode = mode
                 flags = flags or self.__class__.flags
-                print(f'849: fopen: fetching "{self.url}" with {flags=}')
+                DBG(f'849: fopen: fetching "{self.url}" with {flags=}')
                 self.flags = ffi(flags)
                 self.tmpfile = None
 
@@ -1099,7 +1105,7 @@ if not aio.cross.simulator:
                 self.line = None
                 self.buffer.insert(0, "#")
             # self.buffer.append("")
-            print(f"996: {count} lines queued for async eval")
+            DBG(f"996: {count} lines queued for async eval")
 
         @classmethod
         def scan_imports(cls, code, filename, load_try=False):
@@ -1168,7 +1174,7 @@ if not aio.cross.simulator:
             file = file or "<stdin>"
 
             for want in cls.scan_imports(code, file):
-                print(f"1044: requesting module {want=} for {file=} ")
+                DBG(f"1044: requesting module {want=} for {file=} ")
                 repo = None
                 for repo in PyConfig.pkg_repolist:
                     if want in cls.may_need:
