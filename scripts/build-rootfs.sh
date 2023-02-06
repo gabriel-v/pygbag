@@ -23,8 +23,9 @@ from __future__ import annotations
 import sys
 
 M1='os, json, builtins, shutil, zipimport, time, trace, traceback, '
-M2='asyncio, inspect, _thread, importlib, ctypes, tomllib'
-for mod in (M1+M2).split(', '):
+M2='asyncio, inspect, _thread, importlib, ctypes, tomllib, '
+M3='asyncio.coroutines, pdb, cmd, http, http.cookies, encodings, encodings.idna'
+for mod in (M1+M2+M3).split(', '):
     try:
         __import__(mod)
     except:
